@@ -3,3 +3,4 @@ from models import section
 from models import bed
 from models import equipment
 from models import staff
+from models import occupancy
