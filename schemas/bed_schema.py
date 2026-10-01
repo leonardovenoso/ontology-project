@@ -1,5 +1,6 @@
+import uuid
 from pydantic import BaseModel
 
 class CreateBedParams(BaseModel):
-    section_name: str
-    status: str
+  section_id: uuid.UUID
+  status: str
