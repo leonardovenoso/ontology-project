@@ -6,3 +6,10 @@ def create_admin_staff(db_session):
   
   db_session.add(caller)
   db_session.commit()
+
+def create_pharmacy_staff(db_session):
+  staff_data = {"role": "pharmacy", "first_name": "Rose", "last_name": "Larsson"}
+  caller = Staff(**staff_data)
+  
+  db_session.add(caller)
+  db_session.commit()
