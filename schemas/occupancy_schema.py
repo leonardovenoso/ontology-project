@@ -7,3 +7,6 @@ class AssignPatientToBedParams(BaseModel):
   bed_id: uuid.UUID
   admission_date: datetime
   discharge_date: datetime
+
+class DischargePatientParams(BaseModel):
+  patient_id: uuid.UUID
