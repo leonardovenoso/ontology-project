@@ -2,11 +2,11 @@ from schemas.bed_schema import CreateBedParams
 from actions.bed_action import create_bed
 from models.staff import Staff
 from tests.helpers.sections_helper import create_sections, get_section_id_by_name
-from tests.helpers.create_staff_helper import create_admin_staff, create_pharmacy_staff
-from tests.helpers.create_patient_helper import create_patient
+from tests.helpers.staff_helper import create_admin_staff, create_pharmacy_staff
+from tests.helpers.patients_helper import create_patient
 from constants import BedStatus
 from models.patient import Patient
-from actions.assign_patient_to_bed import assign_patient_to_bed
+from actions.assign_patient_to_bed_action import assign_patient_to_bed
 from schemas.occupancy_schema import AssignPatientToBedParams
 from datetime import datetime, timedelta
 from models.occupancy import Occupancy

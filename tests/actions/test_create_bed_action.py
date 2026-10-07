@@ -2,7 +2,7 @@ from schemas.bed_schema import CreateBedParams
 from actions.bed_action import create_bed
 from models.staff import Staff
 from tests.helpers.sections_helper import create_sections, get_section_id_by_name
-from tests.helpers.create_staff_helper import create_admin_staff, create_pharmacy_staff
+from tests.helpers.staff_helper import create_admin_staff, create_pharmacy_staff
 import pytest
 import uuid
 from sqlalchemy.orm.exc import NoResultFound
