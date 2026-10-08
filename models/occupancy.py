@@ -11,5 +11,5 @@ class Occupancy(BaseModel):
     patient_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("patients.id"), nullable=False)
     bed_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("beds.id"), nullable=False)
     admit_date: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
-    discharge_date: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
+    discharge_date: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     status: Mapped[str] = mapped_column(String, nullable=False)
