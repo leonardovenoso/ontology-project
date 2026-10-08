@@ -13,7 +13,7 @@ def assign_patient_to_bed(params:  AssignPatientToBedParams, caller: Staff, db_s
   bed = db_session.query(Bed).filter_by(id=params.bed_id, status=BedStatus.FREE).one()
   patient = db_session.query(Patient).filter_by(id=params.patient_id).one()
 
-  if params.admission_date >= params.discharge_date:
+  if params.discharge_date is not None and params.admission_date >= params.discharge_date:
     raise ValueError("Discharge date must be later than admission date")
 
   occupancy = Occupancy(patient_id=patient.id, bed_id=bed.id, admit_date=params.admission_date, discharge_date=params.discharge_date, status=OccupancyStatus.ACTIVE)
