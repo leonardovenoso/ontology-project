@@ -13,3 +13,11 @@ def create_pharmacy_staff(db_session):
   
   db_session.add(caller)
   db_session.commit()
+
+
+def create_doctor_staff(db_session):
+  staff_data = {"role": "doctor", "first_name": "Gregory", "last_name": "House"}
+  caller = Staff(**staff_data)
+  
+  db_session.add(caller)
+  db_session.commit()
