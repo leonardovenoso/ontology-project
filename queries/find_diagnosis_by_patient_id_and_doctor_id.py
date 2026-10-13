@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Session
 from models.diagnosis import Diagnosis
-from models.staff import Staff
 from uuid import UUID
 
 def find_diagnosis_by_patient_id_and_doctor_id(patient_id: UUID, doctor_id: UUID, db_session: Session) -> list[Diagnosis]:
