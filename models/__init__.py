@@ -5,3 +5,4 @@ from models import equipment
 from models import staff
 from models import occupancy
 from models import shift_assignment
+from models import diagnosis
