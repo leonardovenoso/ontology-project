@@ -1,9 +1,10 @@
 from sqlalchemy.orm import Session
 from models.diagnosis import Diagnosis
 from models.patient import Patient
+from queries.find_patient_by_mrn import find_patient_by_mrn
 
 def find_diagnosis_by_patient_mrn(mrn: str, db_session: Session) -> list[Diagnosis]:
-  patient = db_session.query(Patient).filter_by(mrn=mrn).first()
+  patient = find_patient_by_mrn(mrn, db_session)
   
   if patient is None:
     return []
