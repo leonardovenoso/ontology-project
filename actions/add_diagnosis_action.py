@@ -9,8 +9,8 @@ def add_diagnosis(param: DiagnosisParam, caller: Staff, db_session: Session):
     raise PermissionError("Invalid role")
 
   db_session.query(Staff).filter_by(id=caller.id).one()
-  db_session.query(Patient).filter_by(id=param.patient_id).one()
+  patient = db_session.query(Patient).filter_by(mrn=param.mrn).one()
 
-  diagnosis = Diagnosis(staff_id=caller.id, patient_id=param.patient_id, diagnosis=param.diagnosis)
+  diagnosis = Diagnosis(staff_id=caller.id, patient_id=patient.id, diagnosis=param.diagnosis)
   db_session.add(diagnosis)
   db_session.commit()

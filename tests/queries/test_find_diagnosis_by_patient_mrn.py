@@ -15,10 +15,10 @@ def test_find_diagnosis_by_patient_mrn(db_session: Session):
   doctor = db_session.query(Staff).filter_by(role="doctor").one()
   patient = db_session.query(Patient).one()
   
-  diagnosis_1_param = DiagnosisParam(staff_id=doctor.id, patient_id=patient.id, diagnosis="Stomach age and gastric reflux")
+  diagnosis_1_param = DiagnosisParam(staff_id=doctor.id, mrn=patient.mrn, diagnosis="Stomach age and gastric reflux")
   add_diagnosis(param=diagnosis_1_param, caller=doctor, db_session=db_session)
 
-  diagnosis_2_param = DiagnosisParam(staff_id=doctor.id, patient_id=patient.id, diagnosis="Slow digestion and bloating")
+  diagnosis_2_param = DiagnosisParam(staff_id=doctor.id, mrn=patient.mrn, diagnosis="Slow digestion and bloating")
   add_diagnosis(param=diagnosis_2_param, caller=doctor, db_session=db_session)
 
   diagnosis: list[Diagnosis] = find_diagnosis_by_patient_mrn(mrn=patient.mrn, db_session=db_session)

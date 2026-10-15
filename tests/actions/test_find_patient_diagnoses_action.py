@@ -16,10 +16,10 @@ def test_get_patient_diagnosis(db_session: Session):
   create_patient(db_session)
   patient = db_session.query(Patient).one()
 
-  diagnosis_1_param = DiagnosisParam(patient_id=patient.id, staff_id=doctor.id, diagnosis="Patient reported stomach ache")
+  diagnosis_1_param = DiagnosisParam(mrn=patient.mrn, staff_id=doctor.id, diagnosis="Patient reported stomach ache")
   add_diagnosis(diagnosis_1_param, doctor, db_session)
 
-  diagnosis_2_param = DiagnosisParam(patient_id=patient.id, staff_id=doctor.id, diagnosis="Patient reported bloated belly, and acid reflux after dinner.")
+  diagnosis_2_param = DiagnosisParam(mrn=patient.mrn, staff_id=doctor.id, diagnosis="Patient reported bloated belly, and acid reflux after dinner.")
   add_diagnosis(diagnosis_2_param, doctor, db_session)
 
   diagnosis = find_diagnosis(patient.mrn, doctor, db_session)
@@ -34,10 +34,10 @@ def test_get_patient_diagnosis_with_incorrect_role(db_session: Session):
   create_patient(db_session)
   patient = db_session.query(Patient).one()
 
-  diagnosis_1_param = DiagnosisParam(patient_id=patient.id, staff_id=doctor.id, diagnosis="Patient reported stomach ache")
+  diagnosis_1_param = DiagnosisParam(mrn=patient.mrn, staff_id=doctor.id, diagnosis="Patient reported stomach ache")
   add_diagnosis(diagnosis_1_param, doctor, db_session)
 
-  diagnosis_2_param = DiagnosisParam(patient_id=patient.id, staff_id=doctor.id, diagnosis="Patient reported bloated belly, and acid reflux after dinner.")
+  diagnosis_2_param = DiagnosisParam(mrn=patient.mrn, staff_id=doctor.id, diagnosis="Patient reported bloated belly, and acid reflux after dinner.")
   add_diagnosis(diagnosis_2_param, doctor, db_session)
 
   create_pharmacy_staff(db_session)

@@ -14,13 +14,13 @@ from sqlalchemy.exc import NoResultFound
 def test_add_diagnosis(db_session: Session):
   create_doctor_staff(db_session)
   create_patient(db_session)
-  doctor_staff = db_session.query(Staff).filter_by(role="doctor").first()
-  patient = db_session.query(Patient).first()
+  doctor_staff = db_session.query(Staff).filter_by(role="doctor").one()
+  patient = db_session.query(Patient).one()
 
-  param = DiagnosisParam(staff_id=doctor_staff.id, patient_id=patient.id, diagnosis="Medical diagnosis...")
+  param = DiagnosisParam(staff_id=doctor_staff.id, mrn=patient.mrn, diagnosis="Medical diagnosis...")
   add_diagnosis(param, doctor_staff, db_session)
   
-  diagnosis = db_session.query(Diagnosis).first()
+  diagnosis = db_session.query(Diagnosis).one()
   assert diagnosis.diagnosis == param.diagnosis
 
 
@@ -28,32 +28,32 @@ def test_add_diagnosis_by_unauthorized_staff(db_session: Session):
   create_admin_staff(db_session)
   create_doctor_staff(db_session)
   create_patient(db_session)
-  admin_staff = db_session.query(Staff).filter_by(role="admin_staff").first()
-  patient = db_session.query(Patient).first()
+  admin_staff = db_session.query(Staff).filter_by(role="admin_staff").one()
+  patient = db_session.query(Patient).one()
 
-  param = DiagnosisParam(staff_id=admin_staff.id, patient_id=patient.id, diagnosis="Medical diagnosis...")
+  param = DiagnosisParam(staff_id=admin_staff.id, mrn=patient.mrn, diagnosis="Medical diagnosis...")
   
   with pytest.raises(PermissionError, match="Invalid role"):
     add_diagnosis(param, admin_staff, db_session)
 
 
-def test_add_diagnosis_is_too_short(db_session: Session):  
+def test_add_diagnosis_is_too_short():  
   with pytest.raises(ValidationError, match="should have at least 10 characters"):
-    DiagnosisParam(staff_id=uuid.uuid4(), patient_id=uuid.uuid4(), diagnosis=".........")
+    DiagnosisParam(staff_id=uuid.uuid4(), mrn="9F3A1C2B", diagnosis=".........")
 
 
-def test_add_diagnosis_is_too_long(db_session: Session):  
+def test_add_diagnosis_is_too_long():  
   with pytest.raises(ValidationError, match="at most 250 characters"):
-    DiagnosisParam(staff_id=uuid.uuid4(), patient_id=uuid.uuid4(), diagnosis="." * 251)
+    DiagnosisParam(staff_id=uuid.uuid4(), mrn="9F3A1C2B", diagnosis="." * 251)
 
 
 def test_add_diagnosis_with_wrong_doctor_id(db_session: Session):
   create_patient(db_session)
   create_doctor_staff(db_session)
-  patient = db_session.query(Patient).first()
-  doctor_staff = db_session.query(Staff).filter_by(role="doctor").first()
+  patient = db_session.query(Patient).one()
+  doctor_staff = db_session.query(Staff).filter_by(role="doctor").one()
 
-  param = DiagnosisParam(staff_id=uuid.uuid4(), patient_id=patient.id, diagnosis="Medical diagnosis...")
+  param = DiagnosisParam(staff_id=uuid.uuid4(), mrn=patient.mrn, diagnosis="Medical diagnosis...")
   db_session.delete(doctor_staff)
   db_session.commit()
 
@@ -61,14 +61,13 @@ def test_add_diagnosis_with_wrong_doctor_id(db_session: Session):
     add_diagnosis(param, doctor_staff, db_session)
 
 
-def test_add_diagnosis_with_wrong_patient_id(db_session: Session):
+def test_add_diagnosis_with_wrong_mrn(db_session: Session):
   create_patient(db_session)
   create_doctor_staff(db_session)
-  patient = db_session.query(Patient).first()
-  doctor_staff = db_session.query(Staff).filter_by(role="doctor").first()
+  patient = db_session.query(Patient).one()
+  doctor_staff = db_session.query(Staff).filter_by(role="doctor").one()
 
-  param = DiagnosisParam(staff_id=uuid.uuid4(), patient_id=patient.id, diagnosis="Medical diagnosis...")
-  db_session.delete(patient)
+  param = DiagnosisParam(staff_id=doctor_staff.id, mrn="9F3A1C2B", diagnosis="Medical diagnosis...")
   db_session.commit()
 
   with pytest.raises(NoResultFound):
